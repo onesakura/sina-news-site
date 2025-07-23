@@ -6,78 +6,105 @@
   <title>百度热搜新闻</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    html,
     body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #29354d;
       font-family: "Arial", sans-serif;
-      background-color: #f9f9f9;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    body {
       padding: 20px;
-      color: #333;
-      max-width: 800px;
-      margin: auto;
     }
 
     h1 {
       text-align: center;
-      color: #1a73e8;
+      color: #ffffff;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    #news-container {
+      width: 100%;
+      max-width: 800px;
     }
 
     .news {
-      background: #fff;
+      background: #374867;
       border-radius: 10px;
       padding: 15px;
-      margin-bottom: 15px;
+      margin: 10px auto;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
     }
 
     .news a {
       font-size: 18px;
       font-weight: bold;
-      color: #1a0dab;
+      color: #aad1ff;
       text-decoration: none;
+      display: block;
+      text-align: center;
     }
 
     .news a:hover {
       text-decoration: underline;
     }
 
-    .score {
-      font-size: 14px;
-      color: #888;
-      margin-top: 5px;
-    }
-
     .desc {
       font-size: 15px;
-      margin-top: 10px;
-      color: #555;
+      margin-top: 8px;
+      color: #dddddd;
+      text-align: center;
     }
 
     .update-time {
       text-align: center;
       font-size: 14px;
-      margin-bottom: 20px;
-      color: #666;
+      margin-top: 20px;
+      color: #cccccc;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>百度热搜新闻</h1>
-  <div class="update-time" id="update-time">加载中...</div>
   <div id="news-container">请稍候，正在加载数据...</div>
+  <div class="update-time" id="update-time">加载中...</div>
 
   <script>
-    // 每次打开网页时立即拉取数据
+    const apiURL = 'https://orz.ai/api/v1/dailynews/?platform=baidu';
+    const container = document.getElementById('news-container');
+    const updateTime = document.getElementById('update-time');
+
+    let newsData = [];
+    let currentPage = 0;
+    const itemsPerPage = 6;
+    const intervalSeconds = 5;
+
+    // 页面加载时拉取数据
     fetchNews();
 
-    // 每隔1小时（3600000 毫秒）自动刷新数据
+    // 每小时自动更新一次数据
     setInterval(fetchNews, 60 * 60 * 1000);
 
-    function fetchNews() {
-      const apiURL = 'https://orz.ai/api/v1/dailynews/?platform=baidu';
-      const container = document.getElementById('news-container');
-      const updateTime = document.getElementById('update-time');
+    // 每5秒自动翻页
+    setInterval(() => {
+      if (newsData.length > 0) {
+        currentPage = (currentPage + 1) % Math.ceil(newsData.length / itemsPerPage);
+        renderPage();
+      }
+    }, intervalSeconds * 1000);
 
+    function fetchNews() {
       container.innerHTML = '加载中...';
       updateTime.textContent = '';
 
@@ -85,21 +112,12 @@
         .then(response => response.json())
         .then(data => {
           if (data.status === "200" && Array.isArray(data.data)) {
-            container.innerHTML = '';
-            data.data.forEach(item => {
-              const div = document.createElement('div');
-              div.className = 'news';
-              div.innerHTML = `
-              <a href="${item.url}" target="_blank">${item.title}</a>
-              <div class="score">热度：${item.score}</div>
-              <div class="desc">${item.desc || ''}</div>
-            `;
-              container.appendChild(div);
-            });
+            newsData = data.data;
+            currentPage = 0;
+            renderPage();
 
             const now = new Date();
-            const formatted = now.toLocaleString();
-            updateTime.textContent = `最后更新时间：${formatted}`;
+            updateTime.textContent = `最后更新时间：${now.toLocaleString()}`;
           } else {
             container.innerHTML = '数据获取失败，请稍后再试。';
           }
@@ -107,6 +125,23 @@
         .catch(error => {
           container.innerHTML = '加载失败：' + error.message;
         });
+    }
+
+    function renderPage() {
+      container.innerHTML = '';
+      const start = currentPage * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = newsData.slice(start, end);
+
+      pageItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'news';
+        div.innerHTML = `
+          <a href="${item.url}" target="_blank">${item.title}</a>
+          <div class="desc">${item.desc || ''}</div>
+        `;
+        container.appendChild(div);
+      });
     }
   </script>
 
