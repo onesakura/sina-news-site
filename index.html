@@ -1,150 +1,111 @@
 <!DOCTYPE html>
-<html lang="zh">
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>百度热搜新闻</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #29354d;
-      font-family: "Arial", sans-serif;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    body {
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #ffffff;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    #news-container {
-      width: 100%;
-      max-width: 800px;
-    }
-
-    .news {
-      background: #374867;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px auto;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .news a {
-      font-size: 18px;
-      font-weight: bold;
-      color: #aad1ff;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
-
-    .news a:hover {
-      text-decoration: underline;
-    }
-
-    .desc {
-      font-size: 15px;
-      margin-top: 8px;
-      color: #dddddd;
-      text-align: center;
-    }
-
-    .update-time {
-      text-align: center;
-      font-size: 14px;
-      margin-top: 8px;
-      color: #cccccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI 发布会议文档</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            max-width: 900px;
+        }
+        h1, h2, h3 {
+            color: #2a4d69;
+        }
+        h1 {
+            border-bottom: 2px solid #2a4d69;
+            padding-bottom: 10px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            color: #b52e31;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffecb5;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        ul {
+            margin-left: 20px;
+        }
+    </style>
 </head>
-
 <body>
 
-  <div id="news-container">请稍候，正在加载数据...</div>
-  <div class="update-time" id="update-time">加载中...</div>
+    <h1>BI 发布会议</h1>
 
-  <script>
-    const apiURL = 'https://orz.ai/api/v1/dailynews/?platform=baidu';
-    const container = document.getElementById('news-container');
-    const updateTime = document.getElementById('update-time');
+    <div class="section">
+        <h2>BI 操作说明</h2>
 
-    let newsData = [];
-    let currentPage = 0;
-    const itemsPerPage = 6;
-    const intervalSeconds = 5;
+        <div class="section">
+            <h3>用户注册操作</h3>
+            <p>当前 BI 仅支持通过操作领星 ERP (<a href="https://erp.lingxing.com" target="_blank">https://erp.lingxing.com</a>) 进行跳转注册，故首次登录的账号是无权限的，需联系我们配置用户权限。</p>
+            <p>同理，后续进行账号申请前需先有 ERP 账号，并在 ERP 账号中点击 BI 进行跳转注册，才可以进行后续的权限配置。</p>
+        </div>
 
-    // 页面加载时拉取数据
-    fetchNews();
+        <div class="section">
+            <h3>基础登录</h3>
+            <p><strong>当前 BI 仅支持通过领星 ERP (<a href="https://erp.lingxing.com" target="_blank">https://erp.lingxing.com</a>) 进行跳转登录，不支持直接使用 BI 网站 (<a href="https://bi.lingxing.com/home" target="_blank">https://bi.lingxing.com/home</a>) 登录。</strong></p>
+            <pre>
+erp & BI 测试账号
+账号：<code>MFBI000001</code>
+密码：<code>UJzQpc2sFa</code>
+            </pre>
+        </div>
 
-    // 每小时自动更新一次数据
-    setInterval(fetchNews, 60 * 60 * 1000);
+        <div class="section">
+            <h3>基础界面说明</h3>
 
-    // 每5秒自动翻页
-    setInterval(() => {
-      if (newsData.length > 0) {
-        currentPage = (currentPage + 1) % Math.ceil(newsData.length / itemsPerPage);
-        renderPage();
-      }
-    }, intervalSeconds * 1000);
+            <h4>侧边栏检索</h4>
+            <ul>
+                <li>允许通过侧边栏全局搜索对应的看板。</li>
+                <li>允许通过展开文件夹方式查找。</li>
+            </ul>
 
-    function fetchNews() {
-      container.innerHTML = '加载中...';
-      updateTime.textContent = '';
+            <h4>文件夹排序</h4>
+            <p>通过右上角对文件夹进行按名字排序，方便后续看板以固定顺序进行排列。</p>
+        </div>
 
-      fetch(apiURL)
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === "200" && Array.isArray(data.data)) {
-            newsData = data.data;
-            currentPage = 0;
-            renderPage();
+        <div class="section">
+            <h3>基础看板使用</h3>
 
-            const now = new Date();
-            updateTime.textContent = `最后更新时间：${now.toLocaleString()}`;
-          } else {
-            container.innerHTML = '数据获取失败，请稍后再试。';
-          }
-        })
-        .catch(error => {
-          container.innerHTML = '加载失败：' + error.message;
-        });
-    }
+            <h4>过滤器使用</h4>
+            <p>筛选对应需求数据</p>
 
-    function renderPage() {
-      container.innerHTML = '';
-      const start = currentPage * itemsPerPage;
-      const end = start + itemsPerPage;
-      const pageItems = newsData.slice(start, end);
+            <h4>参数使用</h4>
+            <p>切换对应分析方式</p>
 
-      pageItems.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'news';
-        div.innerHTML = `
-          <a href="${item.url}" target="_blank">${item.title}</a>
-          <div class="desc">${item.desc || ''}</div>
-        `;
-        container.appendChild(div);
-      });
-    }
-  </script>
+            <h4>数据下载</h4>
+            <p>在对应看板右上角选择 <strong>导出数据</strong>。</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>BI 看板架构说明</h2>
+        <ul>
+            <li><strong>A - 综合管理：</strong>公司级别目标管理 & 应用相关</li>
+            <li><strong>B - 产品管理：</strong>产品 & 市场相关信息管理</li>
+            <li><strong>C - 运营管理：</strong>运营日常使用相关看板，包括销售、广告、售价、促销等分析支持</li>
+            <li><strong>D - 供应链管理：</strong>供应链相关看板，包括库存、周转、缺货、销售预测等管理支持</li>
+            <li><strong>E - 财务管理：</strong>毛利分析相关看板</li>
+            <li><strong>F - 售后管理：</strong>客户服务相关看板</li>
+            <li><strong>G - 活动管理：</strong>活动类看板</li>
+        </ul>
+    </div>
 
 </body>
-
 </html>
