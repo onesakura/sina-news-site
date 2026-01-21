@@ -5,46 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BI 发布会议文档</title>
     <style>
+        :root {
+            --primary: #2a4d69;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #4b5563;
+            --border-light: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 40px;
-            max-width: 900px;
+            margin: 0;
+            padding: 40px 20px;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont,
+                         "PingFang SC", "Microsoft YaHei",
+                         "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-main);
         }
-        h1, h2, h3 {
-            color: #2a4d69;
-        }
-        h1 {
-            border-bottom: 2px solid #2a4d69;
-            padding-bottom: 10px;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        code {
-            color: #b52e31;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .note {
-            background: #fff3cd;
-            border-left: 4px solid #ffecb5;
-            padding: 10px;
-            margin: 20px 0;
-        }
+
         .container {
-            margin-top: 20px;
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 48px 56px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 30px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            line-height: 1.75;
+            color: var(--text-sub);
+            margin: 10px 0;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-top: 36px;
+            padding-top: 8px;
+        }
+
+        .section + .section {
+            border-top: 1px dashed var(--border-light);
+            padding-top: 32px;
+        }
+
         ul {
-            margin-left: 20px;
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: var(--text-sub);
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 16px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            margin-top: 14px;
+        }
+
+        code {
+            color: #b42318;
+            font-family: "JetBrains Mono", Consolas, monospace;
+            font-size: 13px;
+        }
+
+        strong {
+            color: #111827;
+        }
+
+        /* SVG 容器微调 */
+        .svg-wrapper {
+            background: #ffffff;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+            overflow-x: auto;
+            margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
+<div class="container">
 
     <h1>BI 发布会议</h1>
 
@@ -94,18 +178,6 @@ erp & BI 测试账号
         </div>
     </div>
 
-    <div class="section">
-        <h2>BI 看板架构说明</h2>
-        <ul>
-            <li><strong>A - 综合管理：</strong>公司级别目标管理 & 应用相关</li>
-            <li><strong>B - 产品管理：</strong>产品 & 市场相关信息管理</li>
-            <li><strong>C - 运营管理：</strong>运营日常使用相关看板，包括销售、广告、售价、促销等分析支持</li>
-            <li><strong>D - 供应链管理：</strong>供应链相关看板，包括库存、周转、缺货、销售预测等管理支持</li>
-            <li><strong>E - 财务管理：</strong>毛利分析相关看板</li>
-            <li><strong>F - 售后管理：</strong>客户服务相关看板</li>
-            <li><strong>G - 活动管理：</strong>活动类看板</li>
-        </ul>
-    </div>
-
+</div>
 </body>
 </html>
